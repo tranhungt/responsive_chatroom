@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src='/javascripts/chat-client.js'></script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <div id='chatbox'>
+        
+    </div>
+    <form id='message-form'>
+        <input type='text' id='chat-message'></input>
+        <input type='submit' value='Send'></input>    
+    </form>
+  </body>
+  
+<script>
+  var chatClient = new ChatClient()
+  
+  $('#message-form').submit(function(){
+    var message = $('#chat-message').val()
+    chatClient.publish({message: message})
+    this.reset()
+    return false
+  })
+
+  chatClient.subscribe(function(data){
+    console.log(data.message)
+    var newMessage = $('<p></p>').html(data.message)
+    $('#chatbox').append(newMessage)
+  })
+
+  $('#chat-message').focus()
+</script
+
+</html>

@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+var debug = require('debug')('responsive_chatroom');
+var WebSocketServer = require('ws').Server
+var app = require('../app');
+var messageBus = app.get('messageBus')
+
+app.set('port', process.env.PORT || 3000);
+
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});
+
+var wss = new WebSocketServer({server: server})
+
+wss.on('connection', function(ws){
+    ws.on('message', function(data){
+        messageBus.emit('message', data)
+    })
+
+    var wsListener = function(data){
+        ws.send(data)
+    }
+
+    messageBus.on('message', wsListener)
+
+    ws.on('close', function(){
+        messageBus.removeListener('message', wsListener)
+    })
+})
