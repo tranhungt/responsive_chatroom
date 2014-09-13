@@ -19,7 +19,6 @@ ChatClient.LongPoll = {
                 method: 'GET',
                 url: '/messages', 
                 success: function(data){
-                    console.log('got back', data)
                     callback(data)
                 },
                 complete: function(){
@@ -45,7 +44,6 @@ ChatClient.WebSocket = {
         }
     },
     publish: function(data){
-        console.log(data)
         this.socket.send(JSON.stringify(data))
     }
 }

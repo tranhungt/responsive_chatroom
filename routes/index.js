@@ -23,11 +23,7 @@ module.exports = function(messageBus){
     })
 
     router.post('/messages', function(req, res){
-        console.log('body', req.body)
-        console.log(messageBus)
-        console.log('Emitting Message')
         messageBus.emit('message', req.body)
-        console.log(messageBus)
         res.status(200).end()
     })
 
